@@ -15,7 +15,6 @@ export default function Component() {
 
   const handleSubmit = async () => {
     try {
-      // Add the user's input to the chat array
       setChat((prevChat) => [...prevChat, { sender: "user", message: input }]);
       setInput("");
 
@@ -24,7 +23,6 @@ export default function Component() {
       });
       console.log(res.data.choices[0].message.content);
 
-      // Call the handleReceive function with the response
       handleReceive(res.data.choices[0].message.content);
     } catch (error) {
       console.log(error);
@@ -32,7 +30,6 @@ export default function Component() {
   };
 
   const handleReceive = (message: string) => {
-    // Add the AI assistant's response to the chat array
     setChat((prevChat) => [...prevChat, { sender: "assistant", message }]);
   };
 
