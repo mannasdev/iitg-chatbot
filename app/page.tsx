@@ -46,11 +46,18 @@ export default function Component() {
       </nav>
       <div className="flex flex-col h-[90vh] max-h-[90vh] bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden">
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          <div className={`flex flex-col items-start space-y-2`}>
+            <div
+              className={`bg-${"white dark:bg-gray-800 text-gray-900 dark:text-gray-100"} px-4 py-3 rounded-lg max-w-[80%]`}
+            >
+              <p>HI, you can ask anything related to the course here !</p>
+            </div>
+          </div>
           {chat.map((msg, index) => (
             <div
               key={index}
               className={`flex flex-col items-${
-                msg.sender !== "user" ? "start" : "end"
+                msg.sender === "user" ? "end" : "start"
               } space-y-2`}
             >
               <div
