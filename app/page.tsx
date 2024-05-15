@@ -57,7 +57,7 @@ export default function Component() {
             <div
               key={index}
               className={`flex flex-col items-${
-                msg.sender === "user" ? "end" : "start"
+                msg.sender === "user" ? `end` : "start"
               } space-y-2`}
             >
               <div
