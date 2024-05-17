@@ -1,8 +1,10 @@
-"use client";
+"use client"
 
 import axios from "axios";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+
 
 interface ChatMessage {
   sender: "user" | "assistant";
@@ -10,16 +12,18 @@ interface ChatMessage {
 }
 
 export default function Component() {
+  const router = useRouter();
   const [input, setInput] = useState("");
   const [chat, setChat] = useState<ChatMessage[]>([]);
 
   const handleSubmit = async () => {
+    const messageToSend = `${input}`;
     try {
-      setChat((prevChat) => [...prevChat, { sender: "user", message: input }]);
+      setChat((prevChat) => [...prevChat, { sender: "user", message: messageToSend }]);
       setInput("");
 
       const res = await axios.post("/api/ask-pplx", {
-        input,
+        input: messageToSend,
       });
       console.log(res.data.choices[0].message.content);
 
@@ -33,6 +37,12 @@ export default function Component() {
     setChat((prevChat) => [...prevChat, { sender: "assistant", message }]);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    }
+  };
+
   return (
     <>
       <nav className="w-screen h-[10vh] flex items-center">
@@ -43,6 +53,7 @@ export default function Component() {
           height={55}
           className="ml-5"
         ></Image>
+        <button className="bg-blue-500 text-white ml-4 rounded-md p-2" onClick={() => router.push("https://iitg.mns.lol/")}>Goto Student website</button>
       </nav>
       <div className="flex flex-col h-[90vh] max-h-[90vh] bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden">
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -78,6 +89,8 @@ export default function Component() {
             placeholder="Type your message..."
             type="text"
             onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            value={input}
           />
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
